@@ -14,7 +14,7 @@ from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 
 # Load preprocessed data
-file_path = r"E:\PhD\New Setup\Horizontalus ruozas-Eksperimetu suvestine (version 2).xlsx"
+file_path = r"Horizontalus ruozas-Eksperimetu suvestine (version 2).xlsx"
 df1 = pd.read_excel(file_path, sheet_name='Sheet3')
 df2 = pd.read_excel(file_path, sheet_name='New')
 
