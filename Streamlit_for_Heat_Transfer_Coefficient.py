@@ -112,7 +112,7 @@ if st.checkbox("Enter Custom Data for Prediction"):
     with col2:
         specific_heat = form.number_input("Specific Heat (kJ/kg K)", value=1.0)
         viscosity = form.number_input("Viscosity (μPa s)", value=10.00, format="%.9f")
-        thermal_conductivity = form.number_input("Thermal Conductivity (W/m K)", value=0.1)
+        thermal_conductivity = form.number_input("Thermal Conductivity (W/m K)", value=0.1, format="%.9f")
         latent_heat = form.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
 
     submit_button = form.form_submit_button(label="Predict")
