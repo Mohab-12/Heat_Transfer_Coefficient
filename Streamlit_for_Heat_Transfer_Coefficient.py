@@ -44,7 +44,7 @@ scaler_y = MinMaxScaler()
 Y = scaler_y.fit_transform(y.reshape(-1, 1))
 
 # Load trained model
-model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
+model = load_model('best_model.keras')  # Ensure you save the trained model with this name
 
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
