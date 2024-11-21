@@ -17,6 +17,8 @@ import matplotlib.pyplot as plt
 file_path = r"Horizontalus ruozas-Eksperimetu suvestine (version 2).xlsx"
 df1 = pd.read_excel(file_path, sheet_name='Sheet3')
 df2 = pd.read_excel(file_path, sheet_name='New')
+df1 = df1.drop(index=df1.index[0]).reset_index(drop=True)
+df2 = df2.drop(index=df1.index[0]).reset_index(drop=True)
 
 # Preprocessing
 df1['Heat_transfer_coefficient'] = df1[['First_heat_Coef',
@@ -42,7 +44,7 @@ scaler_y = MinMaxScaler()
 Y = scaler_y.fit_transform(y.reshape(-1, 1))
 
 # Load trained model
-model = load_model('best_model.keras')  # Ensure you save the trained model with this name
+model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
 
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
