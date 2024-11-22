@@ -12,7 +12,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
-import pickle
+import joblib
 
 
 # Load preprocessed data
