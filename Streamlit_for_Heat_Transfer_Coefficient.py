@@ -138,7 +138,7 @@ if st.checkbox("Enter Custom Data for Prediction"):
 
         # Predict
         custom_prediction = model.predict(custom_input_scaled)
-        custom_prediction_original = scaler_y.inverse_transform(custom_prediction)[0][0]
+        custom_prediction_original = scaler_y.inverse_transform(custom_prediction.reshape(-1,1))[0][0]
 
         st.write(f"**Predicted Heat Transfer Coefficient:** {custom_prediction_original:.2f}")
 
