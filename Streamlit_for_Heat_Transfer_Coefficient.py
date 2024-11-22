@@ -64,7 +64,7 @@ if experiment_index is not None:
     actual = Y[experiment_index]
 
     # Inverse transform the predictions and actual values
-    predicted_original = scaler_y.inverse_transform(predicted)[0][0]
+    predicted_original = scaler_y.inverse_transform(predicted.reshape(-1,1))[0][0]
     # Check the shape of the actual value first
     print(np.shape(actual))  # See what shape the variable actually has
     
