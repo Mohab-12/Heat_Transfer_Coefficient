@@ -12,6 +12,8 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
+import pickle
+
 
 # Load preprocessed data
 file_path = r"Horizontalus ruozas-Eksperimetu suvestine (version 2).xlsx"
