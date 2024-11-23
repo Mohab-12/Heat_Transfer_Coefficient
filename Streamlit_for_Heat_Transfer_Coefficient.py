@@ -105,7 +105,7 @@ if experiment_index is not None:
     # plt.scatter(np.arange(1, len(yy)+1, 1), yy)
     ax.plot(np.arange(1, len(yy)+1, 1), yy, ls='--', color='r')
     r2 = r2_score(df1['Heat_transfer_coefficient'], yy)
-    print(f"Test Set R² Score: {r2}")
+    st.write(f"Test Set R² Score: {r2}")
     st.pyplot(fig) 
 
 # Checkbox for custom input
