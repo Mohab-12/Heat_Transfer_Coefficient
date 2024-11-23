@@ -96,14 +96,16 @@ if experiment_index is not None:
     ax.set_title("Comparison of Predicted vs Actual")
     st.pyplot(fig)
   
-    # fig, ax = plt.subplots()
-    # yy = model.predict(X)
-    # yy = scaler_y.inverse_transform(yy.reshape(-1,1))
-    # plt.figure(figsize=(10,4))
-    # ax.scatter(np.arange(1, len(yy)+1, 1), df1['Heat_transfer_coefficient'])
-    # # plt.scatter(np.arange(1, len(yy)+1, 1), yy)
-    # ax.plot(np.arange(1, len(yy)+1, 1), yy, ls='--', color='r')
-    # st.pyplot(fig) 
+    fig, ax = plt.subplots()
+    yy = model.predict(X)
+    yy = scaler_y.inverse_transform(yy.reshape(-1,1))
+    plt.figure(figsize=(10,4))
+    ax.scatter(np.arange(1, len(yy)+1, 1), df1['Heat_transfer_coefficient'])
+    # plt.scatter(np.arange(1, len(yy)+1, 1), yy)
+    ax.plot(np.arange(1, len(yy)+1, 1), yy, ls='--', color='r')
+    r2 = r2_score(df1['Heat_transfer_coefficient'], yy)
+    print(f"Test Set R² Score: {r2}")
+    st.pyplot(fig) 
 
 # Checkbox for custom input
 if st.checkbox("Enter Custom Data for Prediction"):
