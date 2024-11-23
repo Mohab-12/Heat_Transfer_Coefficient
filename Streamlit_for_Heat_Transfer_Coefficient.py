@@ -46,8 +46,8 @@ scaler_y = MinMaxScaler()
 Y = scaler_y.fit_transform(y.reshape(-1, 1))
 
 # Load trained model
-# model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
-model = joblib.load('clf_gra_model.pkl')
+model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
+# model = joblib.load('clf_gra_model.pkl')
 
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
@@ -64,7 +64,7 @@ if experiment_index is not None:
     actual = Y[experiment_index]
 
     # Inverse transform the predictions and actual values
-    predicted_original = scaler_y.inverse_transform(predicted.reshape(-1,1))[0][0]
+    predicted_original = scaler_y.inverse_transform(predicted)[0][0]
     # Check the shape of the actual value first
     print(np.shape(actual))  # See what shape the variable actually has
     
@@ -98,7 +98,7 @@ if experiment_index is not None:
   
     fig, ax = plt.subplots()
     yy = model.predict(X)
-    yy = scaler_y.inverse_transform(yy.reshape(-1,1))
+    yy = scaler_y.inverse_transform(yy)
     plt.figure(figsize=(10,4))
     ax.scatter(np.arange(1, len(yy)+1, 1), df1['Heat_transfer_coefficient'])
     # plt.scatter(np.arange(1, len(yy)+1, 1), yy)
@@ -140,7 +140,7 @@ if st.checkbox("Enter Custom Data for Prediction"):
 
         # Predict
         custom_prediction = model.predict(custom_input_scaled)
-        custom_prediction_original = scaler_y.inverse_transform(custom_prediction.reshape(-1,1))[0][0]
+        custom_prediction_original = scaler_y.inverse_transform(custom_prediction)[0][0]
 
         st.write(f"**Predicted Heat Transfer Coefficient:** {custom_prediction_original:.2f}")
 
