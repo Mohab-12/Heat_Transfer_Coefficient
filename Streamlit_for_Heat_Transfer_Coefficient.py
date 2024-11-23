@@ -103,7 +103,7 @@ if experiment_index is not None:
     plt.figure(figsize=(10,4))
     ax.scatter(np.arange(1, len(yy)+1, 1), df1['Heat_transfer_coefficient'], label='Actual values')
     # plt.scatter(np.arange(1, len(yy)+1, 1), yy)
-    ax.plot(np.arange(1, len(yy)+1, 1), yy, ls='--', color='r',, label='Predicted values')
+    ax.plot(np.arange(1, len(yy)+1, 1), yy, ls='--', color='r', label='Predicted values')
     ax.set_xlabel("Experiment no.")
     ax.set_ylabel("Heat transfer coefficient (W/m.K)")
     r2 = r2_score(df1['Heat_transfer_coefficient'], yy)
