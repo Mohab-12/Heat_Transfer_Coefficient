@@ -47,8 +47,8 @@ scaler_y = MinMaxScaler()
 Y = scaler_y.fit_transform(y.reshape(-1, 1))
 
 # Load trained model
-model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
-# model = joblib.load('clf_gra_model.pkl')
+# model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
+model = joblib.load('clf_gra_model.pkl')
 
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
@@ -65,7 +65,7 @@ if experiment_index is not None:
     actual = Y[experiment_index]
 
     # Inverse transform the predictions and actual values
-    predicted_original = scaler_y.inverse_transform(predicted)[0][0]
+    predicted_original = scaler_y.inverse_transform(predicted.reshape(-1,1))[0][0]
     # Check the shape of the actual value first
     print(np.shape(actual))  # See what shape the variable actually has
     
@@ -77,7 +77,7 @@ if experiment_index is not None:
         actual_reshaped = np.reshape(actual, (-1, 1))  # Reshape to 2D
     
     # Apply inverse_transform
-    actual_original = scaler_y.inverse_transform(actual_reshaped)[0][0]
+    actual_original = scaler_y.inverse_transform(actual_reshaped.reshape(-1,1))[0][0]
 
 
     # Calculate error
