@@ -99,7 +99,7 @@ if experiment_index is not None:
   
     fig, ax = plt.subplots()
     yy = model.predict(X)
-    yy = scaler_y.inverse_transform(yy)
+    yy = scaler_y.inverse_transform(yy.reshape(-1,1))
     plt.figure(figsize=(10,4))
     ax.scatter(np.arange(1, len(yy)+1, 1), df1['Heat_transfer_coefficient'], label='Actual values')
     # plt.scatter(np.arange(1, len(yy)+1, 1), yy)
