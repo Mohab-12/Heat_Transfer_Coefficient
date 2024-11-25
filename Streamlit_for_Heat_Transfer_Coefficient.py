@@ -29,7 +29,7 @@ DelT2 = df1['Temperature decrease of the mixture_9'] - df1['Temperature increase
 
 DelT_LM = (DelT1-DelT2)/np.log(DelT1/DelT2)
 df1['DelT_LM'] = DelT_LM 
-df1['Heat_transfer_coefficient'] = df1['Heat water'] / (df1['DelT_LM']*0.0206)
+df1['Heat_transfer_coefficient'] = df1['Heat water'] / (df1['DelT_LM']*0.0206*8)
 
 X_features_1 = df1[['Mixture tin, oC', 'Mass Fraction', 'Dewpoint',
                     'Mixture  (air+vapour) flow rate, kg/h', 'Cooling water flow rate, l/h', 'Cooling H2O tin, oC']]
