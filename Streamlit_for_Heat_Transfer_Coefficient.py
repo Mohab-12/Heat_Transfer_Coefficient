@@ -24,14 +24,12 @@ df1 = df1.drop(index=df1.index[0]).reset_index(drop=True)
 df2 = df2.drop(index=df1.index[0]).reset_index(drop=True)
 
 # Preprocessing
-df1['Heat_transfer_coefficient'] = df1[['First_heat_Coef',
-                                        'Second_heat_Coef',
-                                        'Third_heat_Coef',
-                                        'Fourth_heat_Coef',
-                                        'Fifth_heat_Coef',
-                                        'Sixth_heat_Coef',
-                                        'Seventh_heat_Coef',
-                                        'Eighth_heat_Coef']].mean(axis=1)
+DelT1 = df1['Temperature decrease of the mixture_1'] - df1['Temperature increase of the cooling water_1']
+DelT2 = df1['Temperature decrease of the mixture_9'] - df1['Temperature increase of the cooling water_9']
+
+DelT_LM = (DelT1-DelT2)/np.log(DelT1/DelT2)
+df1['DelT_LM'] = DelT_LM 
+df1['Heat_transfer_coefficient'] = df1['Heat water'] / (df1['DelT_LM']*0.0206)
 
 X_features_1 = df1[['Mixture tin, oC', 'Mass Fraction', 'Dewpoint',
                     'Mixture  (air+vapour) flow rate, kg/h', 'Cooling water flow rate, l/h', 'Cooling H2O tin, oC']]
