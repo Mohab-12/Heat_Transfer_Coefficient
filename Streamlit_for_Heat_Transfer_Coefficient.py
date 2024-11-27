@@ -51,63 +51,6 @@ model = joblib.load('Rf_model.pkl')
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
 
-# User selects experiment
-st.sidebar.header("Experiment Selection")
-experiment_index = st.sidebar.selectbox(
-    "Choose an experiment:", options=range(len(X)), format_func=lambda x: f"Experiment {x + 1}")
-
-# Predict and compare
-if experiment_index is not None:
-    selected_data = X[experiment_index].reshape(1, -1)
-    predicted = model.predict(selected_data)
-    actual = Y[experiment_index]
-
-    # Inverse transform the predictions and actual values
-    predicted_original = scaler_y.inverse_transform(predicted.reshape(-1,1))[0][0]
-    # Check the shape of the actual value first
-    print(np.shape(actual))  # See what shape the variable actually has
-    
-    # If actual is a scalar, it will be reshaped as (1, 1)
-    if np.ndim(actual) == 0:
-        actual_reshaped = np.reshape([actual], (1, 1))  # Reshape to 2D if scalar
-    else:
-        # If actual is already an array, reshape it properly
-        actual_reshaped = np.reshape(actual, (-1, 1))  # Reshape to 2D
-    
-    # Apply inverse_transform
-    actual_original = scaler_y.inverse_transform(actual_reshaped.reshape(-1,1))[0][0]
-
-
-    # Calculate error
-    error_percentage = np.abs(predicted_original - actual_original) / actual_original * 100
-
-    # Display results
-    st.subheader(f"Experiment {experiment_index + 1} Results")
-    st.write(f"**Predicted Heat Transfer Coefficient:** {predicted_original:.2f}")
-    st.write(f"**Actual Heat Transfer Coefficient:** {actual_original:.2f}")
-    st.write(f"**Error Percentage:** {error_percentage:.2f}%")
-
-    # Bar chart
-    st.subheader("Comparison Chart")
-    fig, ax = plt.subplots()
-    ax.bar(["Predicted", "Actual"], [predicted_original, actual_original], color=['blue', 'orange'])
-    ax.set_ylabel("Heat Transfer Coefficient")
-    ax.set_title("Comparison of Predicted vs Actual")
-    st.pyplot(fig)
-  
-    fig, ax = plt.subplots()
-    yy = model.predict(X)
-    yy = scaler_y.inverse_transform(yy.reshape(-1,1))
-    plt.figure(figsize=(10,4))
-    ax.scatter(np.arange(1, len(yy)+1, 1), df1['Heat_transfer_coefficient'], label='Actual values')
-    # plt.scatter(np.arange(1, len(yy)+1, 1), yy)
-    ax.plot(np.arange(1, len(yy)+1, 1), yy, ls='--', color='r', label='Predicted values')
-    ax.set_xlabel("Experiment no.")
-    ax.set_ylabel("Heat transfer coefficient (W/m.K)")
-    r2 = r2_score(df1['Heat_transfer_coefficient'], yy)
-    st.write(f"All experimental data's t R² Score: {r2}")
-    st.pyplot(fig) 
-
 # Checkbox for custom input
 if st.checkbox("Enter Custom Data for Prediction"):
     st.subheader("Enter Input Features")
