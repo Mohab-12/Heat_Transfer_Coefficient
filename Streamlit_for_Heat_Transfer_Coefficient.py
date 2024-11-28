@@ -83,15 +83,16 @@ if submit_button:
                               cooling_flow_rate, cooling_temp, specific_heat,
                               viscosity, thermal_conductivity, latent_heat]])
     custom_input_scaled = scaler_x.transform(custom_input)
+    custom_input_scaled_reshaped = custom_input_scaled.reshape(1,-1)
 
     # Predict
-    custom_prediction_Knn = Knn.predict(custom_input_scaled)
+    custom_prediction_Knn = Knn.predict(custom_input_scaled_reshaped)
     custom_prediction_original_Knn = scaler_y.inverse_transform(custom_prediction_Knn.reshape(-1,1))[0][0]
 
-    custom_prediction_Rf = Rf.predict(custom_input_scaled)
+    custom_prediction_Rf = Rf.predict(custom_input_scaled_reshaped)
     custom_prediction_original_Rf = scaler_y.inverse_transform(custom_prediction_Rf.reshape(-1,1))[0][0]
 
-    custom_prediction_clf_gra = clf_gra.predict(custom_input_scaled)
+    custom_prediction_clf_gra = clf_gra.predict(custom_input_scaled_reshaped)
     custom_prediction_original_clf_gra = scaler_y.inverse_transform(custom_prediction_clf_gra.reshape(-1,1))[0][0]
 
 
