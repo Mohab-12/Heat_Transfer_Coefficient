@@ -45,10 +45,10 @@ scaler_y = MinMaxScaler()
 Y = scaler_y.fit_transform(y.reshape(-1, 1))
 
 # Load trained model
-model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
-# KNN = joblib.load('knn_model.pkl')
-# Rf = joblib.load('Rf_model.pkl')
-# clf_gra = joblib.load('clf_gra_model.pkl')
+# model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
+KNN = joblib.load('knn_model.pkl')
+Rf = joblib.load('Rf_model.pkl')
+clf_gra = joblib.load('clf_gra_model.pkl')
 
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
@@ -85,10 +85,24 @@ if submit_button:
     custom_input_scaled = scaler_x.transform(custom_input)
 
     # Predict
-    custom_prediction = model.predict(custom_input_scaled)
-    custom_prediction_original = scaler_y.inverse_transform(custom_prediction.reshape(-1,1))[0][0]
+    custom_prediction_Knn = Knn.predict(custom_input_scaled)
+    custom_prediction_original_Knn = scaler_y.inverse_transform(custom_prediction_Knn.reshape(-1,1))[0][0]
 
-    st.write(f"**Predicted Heat Transfer Coefficient:** {custom_prediction_original:.2f}")
+    custom_prediction_Rf = Rf.predict(custom_input_scaled)
+    custom_prediction_original_Rf = scaler_y.inverse_transform(custom_prediction_Rf.reshape(-1,1))[0][0]
+
+    custom_prediction_clf_gra = clf_gra.predict(custom_input_scaled)
+    custom_prediction_original_clf_gra = scaler_y.inverse_transform(custom_prediction_clf_gra.reshape(-1,1))[0][0]
+
+
+    st.write(f"**Predicted Heat Transfer Coefficient according the K-nearest neighbour algorithm:** {custom_prediction_original_Knn:.2f}")
+    st.write(f"**Predicted Heat Transfer Coefficient according the Random Forest algorithm:** {custom_prediction_original_Rf:.2f}")
+    st.write(f"**Predicted Heat Transfer Coefficient according the Adabtive gradient booting algorithm:** {custom_prediction_original_clf_gra:.2f}")
+
+    figu = plt.bar(["Knn", "Rf", "clf_gra"], [custom_prediction_original_Knn,custom_prediction_original_Rf,custom_prediction_original_clf_gra])
+  st.fig(figu)
+
+
 
 
 # In[ ]:
