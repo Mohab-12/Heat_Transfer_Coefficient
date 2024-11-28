@@ -75,7 +75,7 @@ viscosity = st.number_input("Viscosity (μPa s)", value=10.00, format="%.9f")
 thermal_conductivity = st.number_input("Thermal Conductivity (W/m K)", value=0.1, format="%.9f")
 latent_heat = st.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
 
-submit_button = st.form_submit_button(label="Predict")
+submit_button = st.button(label="Predict")
 
 if submit_button:
     # Prepare custom input
