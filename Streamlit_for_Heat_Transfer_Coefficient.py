@@ -82,7 +82,7 @@ if submit_button:
     custom_input = np.array([[mixture_temp, mass_fraction, dewpoint, mixture_flow_rate,
                               cooling_flow_rate, cooling_temp, specific_heat,
                               viscosity, thermal_conductivity, latent_heat]])
-    custom_input_reshaped = custom_input.reshape(1,-1)
+    custom_input_reshaped = custom_input.reshape(-1,1)
     custom_input_reshaped_scaled = scaler_x.transform(custom_input_reshaped)
     # custom_input_scaled_reshaped = custom_input_scaled)
 
