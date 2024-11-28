@@ -46,7 +46,9 @@ Y = scaler_y.fit_transform(y.reshape(-1, 1))
 
 # Load trained model
 model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
-model = joblib.load('knn_model.pkl')
+# KNN = joblib.load('knn_model.pkl')
+# Rf = joblib.load('Rf_model.pkl')
+# clf_gra = joblib.load('clf_gra_model.pkl')
 
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
