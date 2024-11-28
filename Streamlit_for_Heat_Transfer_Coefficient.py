@@ -83,7 +83,7 @@ if submit_button:
                               cooling_flow_rate, cooling_temp, specific_heat,
                               viscosity, thermal_conductivity, latent_heat]])
     custom_input_scaled = scaler_x.transform(custom_input)
-    custom_input_scaled_reshaped = custom_input_scaled.reshape(1,-1)
+    custom_input_scaled_reshaped = np.array(custom_input_scaled).reshape(1,-1)
 
     # Predict
     custom_prediction_Knn = Knn.predict(custom_input_scaled_reshaped)
