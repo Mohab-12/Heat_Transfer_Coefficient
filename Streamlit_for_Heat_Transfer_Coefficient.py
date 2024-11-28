@@ -45,48 +45,48 @@ scaler_y = MinMaxScaler()
 Y = scaler_y.fit_transform(y.reshape(-1, 1))
 
 # Load trained model
-# model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
+model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
 model = joblib.load('knn_model.pkl')
 
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
 
 # Checkbox for custom input
-if st.checkbox("Enter Custom Data for Prediction"):
-    st.subheader("Enter Input Features")
+# if st.checkbox("Enter Custom Data for Prediction"):
+  st.subheader("Enter Input Features")
 
-    # Input form
-    form = st.form(key="custom_input_form")
-    col1, col2 = form.columns(2)
+  # Input form
+  form = st.form(key="custom_input_form")
+  col1, col2 = form.columns(2)
 
-    with col1:
-        mixture_temp = form.number_input("Mixture Temperature (°C)", value=25.0)
-        mass_fraction = form.number_input("Mass Fraction", value=0.5)
-        dewpoint = form.number_input("Dewpoint", value=10.0)
-        mixture_flow_rate = form.number_input("Mixture Flow Rate (kg/h)", value=100.0)
-        cooling_flow_rate = form.number_input("Cooling Water Flow Rate (l/h)", value=50.0)
-        cooling_temp = form.number_input("Cooling Water Inlet Temp (°C)", value=15.0)
+  with col1:
+      mixture_temp = form.number_input("Mixture Temperature (°C)", value=25.0)
+      mass_fraction = form.number_input("Mass Fraction", value=0.5)
+      dewpoint = form.number_input("Dewpoint", value=10.0)
+      mixture_flow_rate = form.number_input("Mixture Flow Rate (kg/h)", value=100.0)
+      cooling_flow_rate = form.number_input("Cooling Water Flow Rate (l/h)", value=50.0)
+      cooling_temp = form.number_input("Cooling Water Inlet Temp (°C)", value=15.0)
 
-    with col2:
-        specific_heat = form.number_input("Specific Heat (kJ/kg K)", value=1.0, format="%.9f")
-        viscosity = form.number_input("Viscosity (μPa s)", value=10.00, format="%.9f")
-        thermal_conductivity = form.number_input("Thermal Conductivity (W/m K)", value=0.1, format="%.9f")
-        latent_heat = form.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
+  with col2:
+      specific_heat = form.number_input("Specific Heat (kJ/kg K)", value=1.0, format="%.9f")
+      viscosity = form.number_input("Viscosity (μPa s)", value=10.00, format="%.9f")
+      thermal_conductivity = form.number_input("Thermal Conductivity (W/m K)", value=0.1, format="%.9f")
+      latent_heat = form.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
 
-    submit_button = form.form_submit_button(label="Predict")
+  submit_button = form.form_submit_button(label="Predict")
 
-    if submit_button:
-        # Prepare custom input
-        custom_input = np.array([[mixture_temp, mass_fraction, dewpoint, mixture_flow_rate,
-                                  cooling_flow_rate, cooling_temp, specific_heat,
-                                  viscosity, thermal_conductivity, latent_heat]])
-        custom_input_scaled = scaler_x.transform(custom_input)
+  if submit_button:
+      # Prepare custom input
+      custom_input = np.array([[mixture_temp, mass_fraction, dewpoint, mixture_flow_rate,
+                                cooling_flow_rate, cooling_temp, specific_heat,
+                                viscosity, thermal_conductivity, latent_heat]])
+      custom_input_scaled = scaler_x.transform(custom_input)
 
-        # Predict
-        custom_prediction = model.predict(custom_input_scaled)
-        custom_prediction_original = scaler_y.inverse_transform(custom_prediction.reshape(-1,1))[0][0]
+      # Predict
+      custom_prediction = model.predict(custom_input_scaled)
+      custom_prediction_original = scaler_y.inverse_transform(custom_prediction.reshape(-1,1))[0][0]
 
-        st.write(f"**Predicted Heat Transfer Coefficient:** {custom_prediction_original:.2f}")
+      st.write(f"**Predicted Heat Transfer Coefficient:** {custom_prediction_original:.2f}")
 
 
 # In[ ]:
