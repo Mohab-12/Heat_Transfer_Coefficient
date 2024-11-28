@@ -78,33 +78,40 @@ latent_heat = st.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.
 submit_button = st.button(label="Predict")
 
 if submit_button:
-    # Prepare custom input
-    custom_input = np.array([[mixture_temp, mass_fraction, dewpoint, mixture_flow_rate,
-                              cooling_flow_rate, cooling_temp, specific_heat,
-                              viscosity, thermal_conductivity, latent_heat]])
-    # custom_input_reshaped = custom_input.reshape(1,-1)
-    custom_input_reshaped_scaled = scaler_x.transform(custom_input)
-    # custom_input_scaled_reshaped = custom_input_scaled)
+    try:
+        # Prepare custom input
+        custom_input = np.array([[mixture_temp, mass_fraction, dewpoint, mixture_flow_rate,
+                                  cooling_flow_rate, cooling_temp, specific_heat,
+                                  viscosity, thermal_conductivity, latent_heat]])
 
-    # Predict
-    custom_prediction_Knn = knn.predict(custom_input)
-    custom_prediction_original_Knn = scaler_y.inverse_transform(custom_prediction_Knn.reshape(-1,1))[0][0]
+        # Scale the input data
+        custom_input_scaled = scaler_x.transform(custom_input)
 
-    custom_prediction_Rf = Rf.predict(custom_input_reshaped_scaled)
-    custom_prediction_original_Rf = scaler_y.inverse_transform(custom_prediction_Rf.reshape(-1,1))[0][0]
+        # Predictions using the models
+        custom_prediction_KNN = KNN.predict(custom_input_scaled)
+        custom_prediction_original_KNN = scaler_y.inverse_transform(custom_prediction_KNN.reshape(-1, 1))[0][0]
 
-    custom_prediction_clf_gra = clf_gra.predict(custom_input_reshaped_scaled)
-    custom_prediction_original_clf_gra = scaler_y.inverse_transform(custom_prediction_clf_gra.reshape(-1,1))[0][0]
+        custom_prediction_Rf = Rf.predict(custom_input_scaled)
+        custom_prediction_original_Rf = scaler_y.inverse_transform(custom_prediction_Rf.reshape(-1, 1))[0][0]
 
+        custom_prediction_clf_gra = clf_gra.predict(custom_input_scaled)
+        custom_prediction_original_clf_gra = scaler_y.inverse_transform(custom_prediction_clf_gra.reshape(-1, 1))[0][0]
 
-    st.write(f"**Predicted Heat Transfer Coefficient according the K-nearest neighbour algorithm:** {custom_prediction_original_Knn:.2f}")
-    st.write(f"**Predicted Heat Transfer Coefficient according the Random Forest algorithm:** {custom_prediction_original_Rf:.2f}")
-    st.write(f"**Predicted Heat Transfer Coefficient according the Adabtive gradient booting algorithm:** {custom_prediction_original_clf_gra:.2f}")
+        # Display the results
+        st.write(f"**Predicted Heat Transfer Coefficient (KNN):** {custom_prediction_original_KNN:.2f}")
+        st.write(f"**Predicted Heat Transfer Coefficient (Random Forest):** {custom_prediction_original_Rf:.2f}")
+        st.write(f"**Predicted Heat Transfer Coefficient (Gradient Boosting):** {custom_prediction_original_clf_gra:.2f}")
 
-    figu = plt.bar(["Knn", "Rf", "clf_gra"], [custom_prediction_original_Knn,custom_prediction_original_Rf,custom_prediction_original_clf_gra])
-    st.fig(figu)
+        # Visualization
+        fig, ax = plt.subplots()
+        ax.bar(["KNN", "Random Forest", "Gradient Boosting"],
+               [custom_prediction_original_KNN, custom_prediction_original_Rf, custom_prediction_original_clf_gra],
+               color=['blue', 'green', 'orange'])
+        ax.set_ylabel("Heat Transfer Coefficient")
+        st.pyplot(fig)
 
-
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
 
 
 # In[ ]:
