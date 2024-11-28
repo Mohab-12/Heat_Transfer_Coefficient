@@ -100,7 +100,7 @@ if submit_button:
     st.write(f"**Predicted Heat Transfer Coefficient according the Adabtive gradient booting algorithm:** {custom_prediction_original_clf_gra:.2f}")
 
     figu = plt.bar(["Knn", "Rf", "clf_gra"], [custom_prediction_original_Knn,custom_prediction_original_Rf,custom_prediction_original_clf_gra])
-  st.fig(figu)
+    st.fig(figu)
 
 
 
