@@ -87,7 +87,7 @@ if submit_button:
     # custom_input_scaled_reshaped = custom_input_scaled)
 
     # Predict
-    custom_prediction_Knn = Knn.predict(custom_input_reshaped_scaled)
+    custom_prediction_Knn = knn.predict(custom_input_reshaped_scaled)
     custom_prediction_original_Knn = scaler_y.inverse_transform(custom_prediction_Knn.reshape(-1,1))[0][0]
 
     custom_prediction_Rf = Rf.predict(custom_input_reshaped_scaled)
