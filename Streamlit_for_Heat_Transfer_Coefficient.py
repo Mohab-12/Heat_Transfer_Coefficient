@@ -48,7 +48,7 @@ Y = scaler_y.fit_transform(y.reshape(-1, 1))
 # model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
 KNN = joblib.load('knn_model.pkl')
 Rf = joblib.load('Rf_model.pkl')
-clf_gra = joblib.load('clf_gra_model.pkl')
+# clf_gra = joblib.load('clf_gra_model.pkl')
 
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
@@ -94,18 +94,18 @@ if submit_button:
         custom_prediction_Rf = Rf.predict(custom_input_scaled)
         custom_prediction_original_Rf = scaler_y.inverse_transform(custom_prediction_Rf.reshape(-1, 1))[0][0]
 
-        custom_prediction_clf_gra = clf_gra.predict(custom_input_scaled)
-        custom_prediction_original_clf_gra = scaler_y.inverse_transform(custom_prediction_clf_gra.reshape(-1, 1))[0][0]
+        # custom_prediction_clf_gra = clf_gra.predict(custom_input_scaled)
+        # custom_prediction_original_clf_gra = scaler_y.inverse_transform(custom_prediction_clf_gra.reshape(-1, 1))[0][0]
 
         # Display the results
         st.write(f"**Predicted Heat Transfer Coefficient (KNN):** {custom_prediction_original_KNN:.2f}")
         st.write(f"**Predicted Heat Transfer Coefficient (Random Forest):** {custom_prediction_original_Rf:.2f}")
-        st.write(f"**Predicted Heat Transfer Coefficient (Gradient Boosting):** {custom_prediction_original_clf_gra:.2f}")
+        # st.write(f"**Predicted Heat Transfer Coefficient (Gradient Boosting):** {custom_prediction_original_clf_gra:.2f}")
 
         # Visualization
         fig, ax = plt.subplots()
-        ax.bar(["KNN", "Random Forest", "Gradient Boosting"],
-               [custom_prediction_original_KNN, custom_prediction_original_Rf, custom_prediction_original_clf_gra],
+        ax.bar(["KNN", "Random Forest"],
+               [custom_prediction_original_KNN, custom_prediction_original_Rf],
                color=['blue', 'green', 'orange'])
         ax.set_ylabel("Heat Transfer Coefficient")
         st.pyplot(fig)
