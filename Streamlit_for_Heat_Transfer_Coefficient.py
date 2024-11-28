@@ -60,20 +60,20 @@ st.subheader("Enter Input Features")
   # col1, col2 = form.columns(2)
 
   # with col1:
-mixture_temp = form.number_input("Mixture Temperature (°C)", value=25.0)
-mass_fraction = form.number_input("Mass Fraction", value=0.5)
-dewpoint = form.number_input("Dewpoint", value=10.0)
-mixture_flow_rate = form.number_input("Mixture Flow Rate (kg/h)", value=100.0)
-cooling_flow_rate = form.number_input("Cooling Water Flow Rate (l/h)", value=50.0)
-cooling_temp = form.number_input("Cooling Water Inlet Temp (°C)", value=15.0)
+mixture_temp = st.number_input("Mixture Temperature (°C)", value=25.0)
+mass_fraction = st.number_input("Mass Fraction", value=0.5)
+dewpoint = st.number_input("Dewpoint", value=10.0)
+mixture_flow_rate = st.number_input("Mixture Flow Rate (kg/h)", value=100.0)
+cooling_flow_rate = st.number_input("Cooling Water Flow Rate (l/h)", value=50.0)
+cooling_temp = st.number_input("Cooling Water Inlet Temp (°C)", value=15.0)
 
   # with col2:
-specific_heat = form.number_input("Specific Heat (kJ/kg K)", value=1.0, format="%.9f")
-viscosity = form.number_input("Viscosity (μPa s)", value=10.00, format="%.9f")
-thermal_conductivity = form.number_input("Thermal Conductivity (W/m K)", value=0.1, format="%.9f")
-latent_heat = form.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
+specific_heat = st.number_input("Specific Heat (kJ/kg K)", value=1.0, format="%.9f")
+viscosity = st.number_input("Viscosity (μPa s)", value=10.00, format="%.9f")
+thermal_conductivity = st.number_input("Thermal Conductivity (W/m K)", value=0.1, format="%.9f")
+latent_heat = st.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
 
-submit_button = form.form_submit_button(label="Predict")
+submit_button = st.form_submit_button(label="Predict")
 
 if submit_button:
     # Prepare custom input
