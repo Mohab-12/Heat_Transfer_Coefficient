@@ -140,10 +140,10 @@ if know_properties == "Yes":
     latent_heat = st.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
 else:
     c_pg, viscosity, thermal_conductivity, latent_heat = thermo_phy(mixture_temp-10, mass_fraction, mixture_flow_rate)
-    st.write(f"Calculated Specific Heat: {c_pg:.4f} kJ/kg K")
-    st.write(f"Calculated Viscosity: {viscosity:.4f} μPa s")
-    st.write(f"Calculated Thermal Conductivity: {thermal_conductivity:.4f} W/m K")
-    st.write(f"Calculated Latent Heat of Vaporization: {latent_heat:.4f} kJ/kg")
+    st.write(f"Calculated Specific Heat: {c_pg:.9f} kJ/kg K")
+    st.write(f"Calculated Viscosity: {viscosity:.9f} μPa s")
+    st.write(f"Calculated Thermal Conductivity: {thermal_conductivity:.9f} W/m K")
+    st.write(f"Calculated Latent Heat of Vaporization: {latent_heat:.9f} kJ/kg")
 
     # Auto-populate fields
     specific_heat = c_pg
