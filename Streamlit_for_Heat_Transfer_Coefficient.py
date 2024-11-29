@@ -49,6 +49,34 @@ Y = scaler_y.fit_transform(y.reshape(-1, 1))
 KNN = joblib.load('knn_model.pkl')
 Rf = joblib.load('Rf_model.pkl')
 # clf_gra = joblib.load('clf_gra_model.pkl')
+# Function to calculate thermophysical properties
+def thermo_phy(T_g, MF, m_g, M_h2o=18.015, M_g=28.96):
+    m_v = MF * m_g  # vapour flow rate
+    y_h2o = (m_v / M_h2o) / ((m_v / M_h2o) + ((m_g - m_v) / M_g))  # vapour mole fraction
+    y_air = 1 - y_h2o
+
+    # Specific heat
+    cp_Air = np.interp(T_g, [0, 25, 50, 100, 150, 200], [1.006, 1.007, 1.01, 1.02, 1.03, 1.04])
+    cp_water = np.interp(T_g, [0, 100, 200, 300, 400], [1.8, 2.0, 2.2, 2.4, 2.6])
+    M_m = y_air * M_g + y_h2o * M_h2o
+    c_pg = ((M_g / M_m) * y_air * cp_Air + (M_h2o / M_m) * y_h2o * cp_water)
+
+    # Viscosity
+    u_air = np.interp(T_g, [0, 25, 50, 100, 150, 200], [0.017, 0.018, 0.019, 0.02, 0.021, 0.022])
+    u_water = np.interp(T_g, [0, 100, 200, 300], [0.001, 0.0008, 0.0006, 0.0004])
+    viscosity = y_air * u_air + y_h2o * u_water
+
+    # Thermal conductivity
+    k_air = np.interp(T_g, [0, 100, 200, 300], [0.02, 0.03, 0.04, 0.05])
+    k_water = np.interp(T_g, [0, 100, 200, 300], [0.6, 0.65, 0.7, 0.75])
+    thermal_conductivity = y_air * k_air + y_h2o * k_water
+
+    # Latent heat of vaporization
+    latent_heat = 2257 - 2.5 * T_g
+
+    return c_pg, viscosity, thermal_conductivity, latent_heat
+
+
 
 # Streamlit App
 st.title("Heat Transfer Coefficient Prediction")
@@ -68,12 +96,22 @@ dewpoint = st.number_input("Dewpoint", value=10.0)
 mixture_flow_rate = st.number_input("Mixture Flow Rate (kg/h)", value=100.0)
 cooling_flow_rate = st.number_input("Cooling Water Flow Rate (l/h)", value=50.0)
 cooling_temp = st.number_input("Cooling Water Inlet Temp (°C)", value=15.0)
+know_properties = st.radio("Do you know the thermophysical properties?", ("Yes", "No"))
+if know_properties == "Yes":
+    specific_heat = st.number_input("Specific Heat (kJ/kg K)", value=1.0)
+    viscosity = st.number_input("Viscosity (μPa s)", value=10.0)
+    thermal_conductivity = st.number_input("Thermal Conductivity (W/m K)", value=0.1)
+    latent_heat = st.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
+else:
+    c_pg, viscosity, thermal_conductivity, latent_heat = thermo_phy(mixture_temp, mass_fraction, mixture_flow_rate)
+    st.write(f"Calculated Specific Heat: {c_pg:.4f} kJ/kg K")
+    st.write(f"Calculated Viscosity: {viscosity:.4f} μPa s")
+    st.write(f"Calculated Thermal Conductivity: {thermal_conductivity:.4f} W/m K")
+    st.write(f"Calculated Latent Heat of Vaporization: {latent_heat:.4f} kJ/kg")
 
-  # with col2:
-specific_heat = st.number_input("Specific Heat (kJ/kg K)", value=1.0, format="%.9f")
-viscosity = st.number_input("Viscosity (μPa s)", value=10.00, format="%.9f")
-thermal_conductivity = st.number_input("Thermal Conductivity (W/m K)", value=0.1, format="%.9f")
-latent_heat = st.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
+    # Auto-populate fields
+    specific_heat = c_pg
+
 
 submit_button = st.button(label="Predict")
 
