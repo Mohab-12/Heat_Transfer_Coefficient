@@ -103,7 +103,7 @@ if know_properties == "Yes":
     thermal_conductivity = st.number_input("Thermal Conductivity (W/m K)", value=0.1)
     latent_heat = st.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
 else:
-    c_pg, viscosity, thermal_conductivity, latent_heat = thermo_phy(mixture_temp, mass_fraction, mixture_flow_rate)
+    c_pg, viscosity, thermal_conductivity, latent_heat = thermo_phy(mixture_temp-10, mass_fraction, mixture_flow_rate)
     st.write(f"Calculated Specific Heat: {c_pg:.4f} kJ/kg K")
     st.write(f"Calculated Viscosity: {viscosity:.4f} μPa s")
     st.write(f"Calculated Thermal Conductivity: {thermal_conductivity:.4f} W/m K")
