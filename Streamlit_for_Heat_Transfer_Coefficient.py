@@ -109,7 +109,7 @@ def thermo_phy(T_g, MF, m_g, M_h2o=18.015, M_g=28.96):
   print("Thermal conductivity of air {} W/m k".format(np.round(thermal_conductivity,4)))
 #Latent heat
   latent_heat = -0.0021 * (T_g**2) - 2.2115 *(T_g) + 2499
-  print('Latent heat of vapourization {} Kj/kg'.format(np.round(h_fg,4)))
+  print('Latent heat of vapourization {} Kj/kg'.format(np.round(latent_heat,4)))
   return c_pg, viscosity, thermal_conductivity, latent_heat
 
 
