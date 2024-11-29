@@ -93,8 +93,8 @@ def thermo_phy(T_g, MF, m_g, M_h2o=18.015, M_g=28.96):
   u_water = np.interp(point, values3, values4) 
   Q_av = (math.sqrt(2) / 4) * (1 + (M_g / M_h2o)) ** -0.5 * ((1 + math.sqrt(u_air / u_water)) * (M_h2o / M_g) ** 0.25) ** 2
   Q_va = (math.sqrt(2) / 4 )*( 1 + (M_h2o / M_g)) ** -0.5 * ((1 + math.sqrt(u_water / u_air)) * (M_g / M_h2o) ** 0.25) ** 2
-  u_g = ((y_air*u_air)/((y_air) + (y_h2o*Q_av))) + ((y_h2o*u_water)/((y_h2o) + (y_air*Q_va)))
-  print("Dynamic viscosity of the mixture {} μPa s".format(np.round(u_g,10)))
+  viscosity = ((y_air*u_air)/((y_air) + (y_h2o*Q_av))) + ((y_h2o*u_water)/((y_h2o) + (y_air*Q_va)))
+  print("Dynamic viscosity of the mixture {} μPa s".format(np.round(viscosity,10)))
 #Thermal conductivity
   values = [-190, -150, -100, -75, -50, -25, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 40, 50, 60, 80, 100, 125, 150,
             175, 200, 225, 300, 412, 500, 600, 700, 800, 900, 1000, 1100]
@@ -105,10 +105,10 @@ def thermo_phy(T_g, MF, m_g, M_h2o=18.015, M_g=28.96):
   numbers1 = [0.01, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 220, 240, 260, 280, 300, 320, 340, 360]
   numbers2 = [0.0171, 0.0173, 0.0176, 0.0179, 0.0182, 0.0186, 0.0189, 0.0192, 0.0196, 0.02, 0.0204, 0.0208, 0.0212, 0.0216, 0.0221, 0.0225, 0.023, 0.0235, 0.024, 0.0246, 0.0251, 0.0262, 0.0275, 0.0288, 0.0301, 0.0316, 0.0331, 0.0347, 0.0364, 0.0382, 0.0401, 0.0442, 0.0487, 0.054, 0.0605, 0.0695, 0.0836, 0.11, 0.178]
   k_g_vapour = np.interp(T_g,numbers1,numbers2)
-  k_g = ((1-y_h2o)*k_g_air)/((1-y_h2o)+Q_av*y_h2o) + (y_h2o*k_g_vapour)/(y_h2o+(1-y_h2o)*Q_va)  # (W/m k) thermal conductivity of air
-  print("Thermal conductivity of air {} W/m k".format(np.round(k_g,4)))
+  thermal_conductivity = ((1-y_h2o)*k_g_air)/((1-y_h2o)+Q_av*y_h2o) + (y_h2o*k_g_vapour)/(y_h2o+(1-y_h2o)*Q_va)  # (W/m k) thermal conductivity of air
+  print("Thermal conductivity of air {} W/m k".format(np.round(thermal_conductivity,4)))
 #Latent heat
-  h_fg = -0.0021 * (T_g**2) - 2.2115 *(T_g) + 2499
+  latent_heat = -0.0021 * (T_g**2) - 2.2115 *(T_g) + 2499
   print('Latent heat of vapourization {} Kj/kg'.format(np.round(h_fg,4)))
   return c_pg, viscosity, thermal_conductivity, latent_heat
 
