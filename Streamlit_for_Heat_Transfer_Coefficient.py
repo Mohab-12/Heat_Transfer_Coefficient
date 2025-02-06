@@ -49,7 +49,7 @@ Y = scaler_y.fit_transform(y.reshape(-1, 1))
 # model = load_model('Fake_data_model.keras')  # Ensure you save the trained model with this name
 KNN = joblib.load('knn_fake_model.pkl')
 Rf = joblib.load('Rf_fake_model.pkl')
-svr = joblib.load('svr_fake_model.pkl')
+svr = joblib.load('svr__fake_model.pkl')
 
 # Function to calculate thermophysical properties
 def thermo_phy(T_g, MF, m_g, M_h2o=18.015, M_g=28.96):
