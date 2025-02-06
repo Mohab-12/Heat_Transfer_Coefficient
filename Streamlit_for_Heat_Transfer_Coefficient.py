@@ -32,11 +32,11 @@ DelT_LM = (DelT1-DelT2)/np.log(DelT1/DelT2)
 df1['DelT_LM'] = DelT_LM 
 df1['Heat_transfer_coefficient'] = df1['Heat water'] / (df1['DelT_LM']*0.0206*8)
 
-X_features_1 = df1[['Mixture tin, oC', 'Mass Fraction', 'Dewpoint',
-                    'Mixture  (air+vapour) flow rate, kg/h', 'Cooling water flow rate, l/h', 'Cooling H2O tin, oC']]
-X_features_2 = df2[['SPECIFIC HEAT (kj/kg k)', 'VISCOSITY_MIX[μPa s]',
-                    'THERMAL CONDUCTIVTY (W/m k)', "LATENT HEAT OF VAPOURIZATION [KJ/Kg]"]]
-X_features_combined = pd.concat([X_features_1, X_features_2], axis=1)
+X_features_1 = df1[['Mixture tin, oC', 'Mass Fraction', 
+                    'Cooling water flow rate, l/h', 'Cooling H2O tin, oC']]
+# X_features_2 = df2[['SPECIFIC HEAT (kj/kg k)', 'VISCOSITY_MIX[μPa s]',
+#                     'THERMAL CONDUCTIVTY (W/m k)', "LATENT HEAT OF VAPOURIZATION [KJ/Kg]"]]
+X_features_combined = X_features_1
 y = df1['Heat_transfer_coefficient'].values
 
 # Scale data
