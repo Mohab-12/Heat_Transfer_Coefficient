@@ -46,10 +46,10 @@ scaler_y = MinMaxScaler()
 Y = scaler_y.fit_transform(y.reshape(-1, 1))
 
 # Load trained model
-# model = load_model('best_model0.keras')  # Ensure you save the trained model with this name
-KNN = joblib.load('knn_model.pkl')
-Rf = joblib.load('Rf_model.pkl')
-# clf_gra = joblib.load('clf_gra_model.pkl')
+# model = load_model('Fake_data_model.keras')  # Ensure you save the trained model with this name
+KNN = joblib.load('knn_fake_model.pkl')
+Rf = joblib.load('Rf_fake_model.pkl')
+svr = joblib.load('svr_fake_model.pkl')
 
 # Function to calculate thermophysical properties
 def thermo_phy(T_g, MF, m_g, M_h2o=18.015, M_g=28.96):
@@ -128,25 +128,25 @@ st.subheader("Enter Input Features")
   # with col1:
 mixture_temp = st.number_input("Mixture Temperature (°C)", value=25.0)
 mass_fraction = st.number_input("Mass Fraction", value=0.5)
-dewpoint = st.number_input("Dewpoint", value=10.0)
-mixture_flow_rate = st.number_input("Mixture Flow Rate (kg/h)", value=100.0)
+#dewpoint = st.number_input("Dewpoint", value=10.0)
+#mixture_flow_rate = st.number_input("Mixture Flow Rate (kg/h)", value=100.0)
 cooling_flow_rate = st.number_input("Cooling Water Flow Rate (l/h)", value=50.0)
 cooling_temp = st.number_input("Cooling Water Inlet Temp (°C)", value=15.0)
-know_properties = st.radio("Do you know the thermophysical properties?", ("Yes", "No"))
-if know_properties == "Yes":
-    specific_heat = st.number_input("Specific Heat (kJ/kg K)", value=1.0)
-    viscosity = st.number_input("Viscosity (μPa s)", value=10.0)
-    thermal_conductivity = st.number_input("Thermal Conductivity (W/m K)", value=0.1)
-    latent_heat = st.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
-else:
-    c_pg, viscosity, thermal_conductivity, latent_heat = thermo_phy(mixture_temp-10, mass_fraction/100, mixture_flow_rate)
-    st.write(f"Calculated Specific Heat: {c_pg:.9f} kJ/kg K")
-    st.write(f"Calculated Viscosity: {viscosity:.9f} μPa s")
-    st.write(f"Calculated Thermal Conductivity: {thermal_conductivity:.9f} W/m K")
-    st.write(f"Calculated Latent Heat of Vaporization: {latent_heat:.9f} kJ/kg")
+# know_properties = st.radio("Do you know the thermophysical properties?", ("Yes", "No"))
+#if know_properties == "Yes":
+    #specific_heat = st.number_input("Specific Heat (kJ/kg K)", value=1.0)
+    #viscosity = st.number_input("Viscosity (μPa s)", value=10.0)
+    #thermal_conductivity = st.number_input("Thermal Conductivity (W/m K)", value=0.1)
+    #latent_heat = st.number_input("Latent Heat of Vaporization (kJ/kg)", value=2200.0)
+#else:
+ #   c_pg, viscosity, thermal_conductivity, latent_heat = thermo_phy(mixture_temp-10, mass_fraction/100, mixture_flow_rate)
+  #  st.write(f"Calculated Specific Heat: {c_pg:.9f} kJ/kg K")
+  #  st.write(f"Calculated Viscosity: {viscosity:.9f} μPa s")
+  #  st.write(f"Calculated Thermal Conductivity: {thermal_conductivity:.9f} W/m K")
+  #  st.write(f"Calculated Latent Heat of Vaporization: {latent_heat:.9f} kJ/kg")
 
     # Auto-populate fields
-    specific_heat = c_pg
+ #   specific_heat = c_pg
 
 
 submit_button = st.button(label="Predict")
@@ -154,9 +154,8 @@ submit_button = st.button(label="Predict")
 if submit_button:
     try:
         # Prepare custom input
-        custom_input = np.array([[mixture_temp, mass_fraction, dewpoint, mixture_flow_rate,
-                                  cooling_flow_rate, cooling_temp, specific_heat,
-                                  viscosity, thermal_conductivity, latent_heat]])
+        custom_input = np.array([[mixture_temp, mass_fraction, 
+                                  cooling_flow_rate, cooling_temp]])
 
         # Scale the input data
         custom_input_scaled = scaler_x.transform(custom_input)
@@ -168,18 +167,18 @@ if submit_button:
         custom_prediction_Rf = Rf.predict(custom_input_scaled)
         custom_prediction_original_Rf = scaler_y.inverse_transform(custom_prediction_Rf.reshape(-1, 1))[0][0]
 
-        # custom_prediction_clf_gra = clf_gra.predict(custom_input_scaled)
-        # custom_prediction_original_clf_gra = scaler_y.inverse_transform(custom_prediction_clf_gra.reshape(-1, 1))[0][0]
+        custom_prediction_svr = svr.predict(custom_input_scaled)
+        custom_prediction_original_svr = scaler_y.inverse_transform(custom_prediction_svr.reshape(-1, 1))[0][0]
 
         # Display the results
         st.write(f"**Predicted Heat Transfer Coefficient (KNN):** {custom_prediction_original_KNN:.2f}")
         st.write(f"**Predicted Heat Transfer Coefficient (Random Forest):** {custom_prediction_original_Rf:.2f}")
-        # st.write(f"**Predicted Heat Transfer Coefficient (Gradient Boosting):** {custom_prediction_original_clf_gra:.2f}")
+        # st.write(f"**Predicted Heat Transfer Coefficient (SVM):** {custom_prediction_original_svr:.2f}")
 
         # Visualization
         fig, ax = plt.subplots()
-        ax.bar(["KNN", "Random Forest"],
-               [custom_prediction_original_KNN, custom_prediction_original_Rf],
+        ax.bar(["KNN", "Random Forest","SVR"],
+               [custom_prediction_original_KNN, custom_prediction_original_Rf, custom_prediction_original_svr],
                color=['blue', 'green', 'orange'])
         ax.set_ylabel("Heat Transfer Coefficient")
         st.pyplot(fig)
