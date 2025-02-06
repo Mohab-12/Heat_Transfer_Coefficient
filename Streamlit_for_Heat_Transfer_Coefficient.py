@@ -46,7 +46,7 @@ scaler_y = MinMaxScaler()
 Y = scaler_y.fit_transform(y.reshape(-1, 1))
 
 # Load trained model
-# model = load_model('Fake_data_model.keras')  # Ensure you save the trained model with this name
+ANN = load_model('Fake_data_model.keras')  # Ensure you save the trained model with this name
 KNN = joblib.load('knn_fake_model.pkl')
 Rf = joblib.load('Rf_fake_model.pkl')
 svr = joblib.load('svr__fake_model.pkl')
@@ -161,6 +161,9 @@ if submit_button:
         custom_input_scaled = scaler_x.transform(custom_input)
 
         # Predictions using the models
+        custom_prediction_ANN = ANN.predict(custom_input_scaled)
+        custom_prediction_original_ANN = scaler_y.inverse_transform(custom_prediction_ANN)[0][0]
+      
         custom_prediction_KNN = KNN.predict(custom_input_scaled)
         custom_prediction_original_KNN = scaler_y.inverse_transform(custom_prediction_KNN.reshape(-1, 1))[0][0]
 
@@ -177,9 +180,9 @@ if submit_button:
 
         # Visualization
         fig, ax = plt.subplots()
-        ax.bar(["KNN", "Random Forest","SVR"],
-               [custom_prediction_original_KNN, custom_prediction_original_Rf, custom_prediction_original_svr],
-               color=['blue', 'green', 'orange'])
+        ax.bar(["ANN","KNN", "Random Forest","SVR"],
+               [custom_prediction_original_ANN,custom_prediction_original_KNN, custom_prediction_original_Rf, custom_prediction_original_svr],
+               color=['blue', 'green', 'orange','red'])
         ax.set_ylabel("Heat Transfer Coefficient")
         st.pyplot(fig)
 
