@@ -174,9 +174,10 @@ if submit_button:
         custom_prediction_original_svr = scaler_y.inverse_transform(custom_prediction_svr.reshape(-1, 1))[0][0]
 
         # Display the results
+        st.write(f"**Predicted Heat Transfer Coefficient (ANN):** {custom_prediction_original_ANN:.2f}")
         st.write(f"**Predicted Heat Transfer Coefficient (KNN):** {custom_prediction_original_KNN:.2f}")
         st.write(f"**Predicted Heat Transfer Coefficient (Random Forest):** {custom_prediction_original_Rf:.2f}")
-        # st.write(f"**Predicted Heat Transfer Coefficient (SVM):** {custom_prediction_original_svr:.2f}")
+        st.write(f"**Predicted Heat Transfer Coefficient (SVM):** {custom_prediction_original_svr:.2f}")
 
         # Visualization
         fig, ax = plt.subplots()
